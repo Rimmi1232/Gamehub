@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gamehub - Snake</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+            radial-gradient(circle at top, #241044 0%, #090512 45%, #030208 100%);
+        color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .game {
+        width: min(95vw, 560px);
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 48px;
+        margin: 0 0 10px;
+        color: #b66cff;
+        text-shadow: 0 0 20px #8b35ff;
+    }
+
+    .stats {
+        display: flex;
+        justify-content: space-between;
+        margin: 15px 0;
+        padding: 12px 18px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid #6333a5;
+        border-radius: 12px;
+        font-size: 18px;
+    }
+
+    canvas {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        background: #08060f;
+        border: 3px solid #8b35ff;
+        border-radius: 12px;
+        box-shadow:
+            0 0 25px rgba(139,53,255,0.5),
+            inset 0 0 30px rgba(139,53,255,0.08);
+        display: block;
+    }
+
+    .buttons {
+        margin-top: 18px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    button {
+        border: none;
+        border-radius: 10px;
+        padding: 12px 20px;
+        background: #7c3aed;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #9b5cff;
+        transform: translateY(-2px);
+    }
+
+    .message {
+        min-height: 28px;
+        margin-top: 12px;
+        color: #d8c1ff;
+        font-weight: bold;
+    }
+
+    .controls {
+        margin: 20px auto 0;
+        width: 180px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 7px;
+    }
+
+    .controls button {
+        padding: 12px 0;
+        font-size: 20px;
+    }
+
+    .up {
+        grid-column: 2;
+    }
+
+    .left {
+        grid-column: 1;
+    }
+
+    .down {
+        grid-column: 2;
+    }
+
+    .right {
+        grid-column: 3;
+        grid-row: 2;
+    }
+
+    .back {
+        margin-top: 20px;
+        display: inline-block;
+        color: #c99cff;
+        text-decora
