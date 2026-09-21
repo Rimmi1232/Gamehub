@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Gamehub - Snake</title>
+    <title>Gamehub 🎮</title>
 
     <style>
         * {
@@ -16,13 +16,13 @@
 
         body {
             font-family: Arial, sans-serif;
-            min-height: 100vh;
             color: white;
+            min-height: 100vh;
 
             background:
                 linear-gradient(
-                    rgba(5, 5, 20, 0.75),
-                    rgba(5, 5, 20, 0.9)
+                    rgba(5, 5, 20, 0.78),
+                    rgba(5, 5, 20, 0.95)
                 ),
                 url("https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=2000&q=80");
 
@@ -41,17 +41,24 @@
             background: rgba(10, 10, 25, 0.95);
 
             border-bottom: 2px solid #7c3aed;
+
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .logo {
             font-size: 28px;
             font-weight: bold;
             color: #b66cff;
+
+            text-shadow: 0 0 15px #7c3aed;
         }
 
         nav a {
             color: white;
             text-decoration: none;
+            margin-left: 25px;
             font-weight: bold;
         }
 
@@ -61,7 +68,7 @@
 
         .hero {
             text-align: center;
-            padding: 100px 20px 60px;
+            padding: 100px 20px 70px;
         }
 
         .hero h1 {
@@ -78,67 +85,92 @@
         .hero p {
             font-size: 21px;
             color: #ddd;
-            margin-bottom: 35px;
         }
 
-        .game-section {
+        .games {
             padding: 50px 8% 100px;
+
+            background: rgba(5, 5, 20, 0.75);
+        }
+
+        .games h2 {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 45px;
+        }
+
+        .game-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 30px;
+
+            max-width: 1200px;
+            margin: auto;
         }
 
         .game-card {
-            max-width: 500px;
-            margin: auto;
+            background: rgba(25, 20, 45, 0.96);
 
-            background: rgba(20, 15, 35, 0.95);
+            border: 1px solid #444;
 
-            border: 2px solid #7c3aed;
-            border-radius: 20px;
+            border-radius: 18px;
 
             overflow: hidden;
 
             box-shadow:
-                0 0 30px rgba(124, 58, 237, 0.4);
+                0 10px 30px rgba(0,0,0,0.5);
+
+            transition: 0.25s;
         }
 
-        .game-image {
+        .game-card:hover {
+            transform: translateY(-10px);
+
+            border-color: #a855f7;
+
+            box-shadow:
+                0 0 30px rgba(168,85,247,0.5);
+        }
+
+        .game-card img {
             width: 100%;
-            height: 230px;
+            height: 180px;
 
             object-fit: cover;
         }
 
         .game-content {
-            padding: 30px;
-            text-align: center;
+            padding: 22px;
         }
 
-        .game-content h2 {
-            font-size: 32px;
-            margin-bottom: 15px;
+        .game-content h3 {
+            font-size: 26px;
+            margin-bottom: 10px;
         }
 
         .game-content p {
-            color: #ccc;
-            margin-bottom: 25px;
+            color: #bbb;
             line-height: 1.5;
+            margin-bottom: 20px;
         }
 
         .play-button {
             display: inline-block;
 
-            padding: 15px 30px;
+            padding: 11px 20px;
 
             background: #7c3aed;
+
             color: white;
 
             text-decoration: none;
 
-            border-radius: 10px;
+            border-radius: 9px;
 
-            font-size: 18px;
             font-weight: bold;
-
-            box-shadow: 0 0 15px #7c3aed;
 
             transition: 0.2s;
         }
@@ -148,8 +180,19 @@
             transform: scale(1.05);
         }
 
+        .coming-soon {
+            background: #333;
+            cursor: not-allowed;
+        }
+
+        .coming-soon:hover {
+            background: #444;
+            transform: none;
+        }
+
         footer {
             text-align: center;
+
             padding: 30px;
 
             background: #050510;
@@ -163,12 +206,12 @@
                 font-size: 48px;
             }
 
-            .hero {
-                padding-top: 70px;
-            }
-
             nav {
                 padding: 15px 5%;
+            }
+
+            nav a {
+                margin-left: 10px;
             }
         }
     </style>
@@ -176,18 +219,23 @@
 
 <body>
 
+    <!-- NAVIGATIE -->
+
     <nav>
 
         <div class="logo">
             🎮 Gamehub
         </div>
 
-        <a href="#snake">
-            Snake
-        </a>
+        <div>
+            <a href="#">Home</a>
+            <a href="#games">Games</a>
+        </div>
 
     </nav>
 
+
+    <!-- HERO -->
 
     <section class="hero">
 
@@ -196,51 +244,194 @@
         </h1>
 
         <p>
-            Welkom bij jouw gamingwereld! 🎮
+            🎮 Welkom bij jouw ultieme gamingwereld!
         </p>
 
     </section>
 
 
-    <section class="game-section" id="snake">
+    <!-- GAMES -->
 
-        <div class="game-card">
+    <section class="games" id="games">
 
-            <img
-                class="game-image"
-                src="https://images.unsplash.com/photo-1614294148960-9aa740632a87?auto=format&fit=crop&w=1000&q=80"
-                alt="Gaming"
-            >
+        <h2>
+            🔥 Mijn Games
+        </h2>
 
-            <div class="game-content">
 
-                <h2>
-                    🐍 Snake
-                </h2>
+        <div class="game-grid">
 
-                <p>
-                    Bestuur de slang, eet het eten,
-                    word steeds langer en probeer
-                    de hoogste score te halen!
-                </p>
 
-                <a
-                    class="play-button"
-                    href="snake.html"
+            <!-- SNAKE -->
+
+            <div class="game-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1614294148960-9aa740632a87?auto=format&fit=crop&w=900&q=80"
+                    alt="Snake game"
                 >
-                    🎮 SPEEL SNAKE
-                </a>
+
+                <div class="game-content">
+
+                    <h3>
+                        🐍 Snake
+                    </h3>
+
+                    <p>
+                        Bestuur de slang, eet het eten
+                        en probeer de hoogste score te halen!
+                    </p>
+
+                    <a
+                        class="play-button"
+                        href="snake.html"
+                    >
+                        🎮 SPEEL SNAKE
+                    </a>
+
+                </div>
 
             </div>
+
+
+            <!-- ACTION -->
+
+            <div class="game-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80"
+                    alt="Action game"
+                >
+
+                <div class="game-content">
+
+                    <h3>
+                        🎯 Action
+                    </h3>
+
+                    <p>
+                        Klik zo snel mogelijk op de
+                        targets en haal een hoge score!
+                    </p>
+
+                    <a
+                        class="play-button"
+                        href="action.html"
+                    >
+                        🎯 SPEEL ACTION
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- RETRO -->
+
+            <div class="game-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80"
+                    alt="Retro game"
+                >
+
+                <div class="game-content">
+
+                    <h3>
+                        👾 Retro
+                    </h3>
+
+                    <p>
+                        Klassieke arcade-actie komt
+                        binnenkort naar Gamehub!
+                    </p>
+
+                    <a
+                        class="play-button coming-soon"
+                        href="#"
+                    >
+                        👾 BINNENKORT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- RACING -->
+
+            <div class="game-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=900&q=80"
+                    alt="Racing game"
+                >
+
+                <div class="game-content">
+
+                    <h3>
+                        🏎️ Racing
+                    </h3>
+
+                    <p>
+                        Race tegen de klok en word
+                        de snelste coureur!
+                    </p>
+
+                    <a
+                        class="play-button coming-soon"
+                        href="#"
+                    >
+                        🏎️ BINNENKORT
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ADVENTURE -->
+
+            <div class="game-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=80"
+                    alt="Adventure game"
+                >
+
+                <div class="game-content">
+
+                    <h3>
+                        ⚔️ Adventure
+                    </h3>
+
+                    <p>
+                        Ontdek mysterieuze werelden
+                        en beleef spannende avonturen!
+                    </p>
+
+                    <a
+                        class="play-button coming-soon"
+                        href="#"
+                    >
+                        ⚔️ BINNENKORT
+                    </a>
+
+                </div>
+
+            </div>
+
 
         </div>
 
     </section>
 
 
+    <!-- FOOTER -->
+
     <footer>
 
-        © 2026 Gamehub 🐍🎮
+        © 2026 Gamehub 🎮 | Made with ❤️
 
     </footer>
 
