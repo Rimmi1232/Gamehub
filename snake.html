@@ -1,4 +1,4 @@
-```html
+     ```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -201,5 +201,205 @@ function createFood() {
         };
     } while (
         snake.some(part =>
-            part.x === food
+            part.x === food.x && part.y === food.y
+        )
+    );
+}
+
+function draw() {
+
+    ctx.fillStyle = "#05030a";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Voedsel
+    ctx.fillStyle = "#ff3b81";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        food.x * grid + grid / 2,
+        food.y * grid + grid / 2,
+        8,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fill();
+
+    // Slang
+    snake.forEach((part, index) => {
+
+        ctx.fillStyle =
+            index === 0 ? "#c084fc" : "#7c3aed";
+
+        ctx.fillRect(
+            part.x * grid + 2,
+            part.y * grid + 2,
+            grid - 4,
+            grid - 4
+        );
+    });
+}
+
+function update() {
+
+    if (!gameRunning || paused) return;
+
+    direction = nextDirection;
+
+    const head = {
+        x: snake[0].x,
+        y: snake[0].y
+    };
+
+    if (direction === "up") head.y--;
+    if (direction === "down") head.y++;
+    if (direction === "left") head.x--;
+    if (direction === "right") head.x++;
+
+    // Muur
+    if (
+        head.x < 0 ||
+        head.x >= tiles ||
+        head.y < 0 ||
+        head.y >= tiles
+    ) {
+        gameOver();
+        return;
+    }
+
+    // Zelf raken
+    if (
+        snake.some(part =>
+            part.x === head.x &&
+            part.y === head.y
+        )
+    ) {
+        gameOver();
+        return;
+    }
+
+    snake.unshift(head);
+
+    // Eten
+    if (
+        head.x === food.x &&
+        head.y === food.y
+    ) {
+
+        score++;
+
+        document.getElementById("score").textContent = score;
+
+        if (score > highscore) {
+
+            highscore = score;
+
+            localStorage.setItem(
+                "snakeHighscore",
+                highscore
+            );
+
+            document.getElementById("highscore").textContent =
+                highscore;
+        }
+
+        createFood();
+
+    } else {
+
+        snake.pop();
+    }
+
+    draw();
+}
+
+function startGame() {
+
+    if (gameRunning) return;
+
+    gameRunning = true;
+    paused = false;
+
+    document.getElementById("message").textContent =
+        "🐍 Veel succes!";
+
+    clearInterval(gameLoop);
+
+    gameLoop = setInterval(update, 120);
+}
+
+function pauseGame() {
+
+    if (!gameRunning) return;
+
+    paused = !paused;
+
+    document.getElementById("message").textContent =
+        paused ? "⏸ Gepauzeerd" : "🐍 Verder spelen!";
+}
+
+function restartGame() {
+
+    clearInterval(gameLoop);
+
+    gameRunning = false;
+    paused = false;
+
+    createGame();
+
+    document.getElementById("message").textContent =
+        "Druk op Start om te spelen!";
+}
+
+function gameOver() {
+
+    gameRunning = false;
+
+    clearInterval(gameLoop);
+
+    document.getElementById("message").textContent =
+        "💀 Game Over! Score: " + score;
+}
+
+function changeDirection(newDirection) {
+
+    if (newDirection === "up" && direction !== "down")
+        nextDirection = "up";
+
+    if (newDirection === "down" && direction !== "up")
+        nextDirection = "down";
+
+    if (newDirection === "left" && direction !== "right")
+        nextDirection = "left";
+
+    if (newDirection === "right" && direction !== "left")
+        nextDirection = "right";
+}
+
+document.addEventListener("keydown", event => {
+
+    if (event.key === "ArrowUp")
+        changeDirection("up");
+
+    if (event.key === "ArrowDown")
+        changeDirection("down");
+
+    if (event.key === "ArrowLeft")
+        changeDirection("left");
+
+    if (event.key === "ArrowRight")
+        changeDirection("right");
+
+    if (event.key === " ")
+        pauseGame();
+});
+
+createGame();
+
+</script>
+
+</body>
+</html>
 ```
+                                                                                                                                                                                                            
