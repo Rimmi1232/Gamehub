@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Gamehub</title>
+    <title>Gamehub - Snake</title>
 
     <style>
         * {
@@ -16,54 +16,63 @@
 
         body {
             font-family: Arial, sans-serif;
+            min-height: 100vh;
+            color: white;
+
             background:
-                linear-gradient(rgba(5, 5, 20, 0.75), rgba(5, 5, 20, 0.9)),
+                linear-gradient(
+                    rgba(5, 5, 20, 0.75),
+                    rgba(5, 5, 20, 0.9)
+                ),
                 url("https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=2000&q=80");
+
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            color: white;
-            min-height: 100vh;
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+
             padding: 20px 8%;
-            background: rgba(10, 10, 25, 0.9);
+
+            background: rgba(10, 10, 25, 0.95);
+
             border-bottom: 2px solid #7c3aed;
-            position: sticky;
-            top: 0;
-            z-index: 10;
         }
 
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: #a855f7;
+            color: #b66cff;
         }
 
         nav a {
             color: white;
             text-decoration: none;
-            margin-left: 25px;
             font-weight: bold;
         }
 
         nav a:hover {
-            color: #a855f7;
+            color: #b66cff;
         }
 
         .hero {
             text-align: center;
-            padding: 110px 20px;
+            padding: 100px 20px 60px;
         }
 
         .hero h1 {
             font-size: 70px;
-            text-shadow: 0 0 25px #7c3aed;
             margin-bottom: 20px;
+
+            color: #b66cff;
+
+            text-shadow:
+                0 0 10px #7c3aed,
+                0 0 30px #7c3aed;
         }
 
         .hero p {
@@ -72,109 +81,94 @@
             margin-bottom: 35px;
         }
 
-        .main-button {
-            display: inline-block;
-            background: #7c3aed;
-            color: white;
-            padding: 15px 35px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-            box-shadow: 0 0 20px #7c3aed;
-            transition: 0.3s;
-        }
-
-        .main-button:hover {
-            transform: scale(1.08);
-            background: #9333ea;
-        }
-
-        .games {
-            padding: 60px 8%;
-            background: rgba(5, 5, 20, 0.8);
-        }
-
-        .games h2 {
-            text-align: center;
-            font-size: 40px;
-            margin-bottom: 40px;
-        }
-
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
+        .game-section {
+            padding: 50px 8% 100px;
         }
 
         .game-card {
-            background: rgba(25, 25, 45, 0.95);
-            border-radius: 15px;
+            max-width: 500px;
+            margin: auto;
+
+            background: rgba(20, 15, 35, 0.95);
+
+            border: 2px solid #7c3aed;
+            border-radius: 20px;
+
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: 0.3s;
-            border: 1px solid #333;
+
+            box-shadow:
+                0 0 30px rgba(124, 58, 237, 0.4);
         }
 
-        .game-card:hover {
-            transform: translateY(-10px);
-            border-color: #a855f7;
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
-        }
-
-        .game-card img {
+        .game-image {
             width: 100%;
-            height: 180px;
+            height: 230px;
+
             object-fit: cover;
         }
 
         .game-content {
-            padding: 20px;
+            padding: 30px;
+            text-align: center;
         }
 
-        .game-content h3 {
-            font-size: 24px;
-            margin-bottom: 10px;
+        .game-content h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
         }
 
         .game-content p {
-            color: #bbb;
-            margin-bottom: 20px;
+            color: #ccc;
+            margin-bottom: 25px;
+            line-height: 1.5;
         }
 
         .play-button {
             display: inline-block;
-            padding: 10px 20px;
+
+            padding: 15px 30px;
+
             background: #7c3aed;
             color: white;
+
             text-decoration: none;
-            border-radius: 8px;
+
+            border-radius: 10px;
+
+            font-size: 18px;
             font-weight: bold;
+
+            box-shadow: 0 0 15px #7c3aed;
+
+            transition: 0.2s;
         }
 
         .play-button:hover {
-            background: #9333ea;
+            background: #9b5cff;
+            transform: scale(1.05);
         }
 
         footer {
             text-align: center;
             padding: 30px;
+
             background: #050510;
+
             color: #888;
         }
 
         @media (max-width: 600px) {
+
             .hero h1 {
-                font-size: 45px;
+                font-size: 48px;
+            }
+
+            .hero {
+                padding-top: 70px;
             }
 
             nav {
                 padding: 15px 5%;
-            }
-
-            nav a {
-                margin-left: 10px;
-                font-size: 14px;
             }
         }
     </style>
@@ -183,133 +177,59 @@
 <body>
 
     <nav>
-        <div class="logo">🎮 Gamehub</div>
 
-        <div>
-            <a href="#">Home</a>
-            <a href="#games">Games</a>
+        <div class="logo">
+            🎮 Gamehub
         </div>
+
+        <a href="#snake">
+            Snake
+        </a>
+
     </nav>
+
 
     <section class="hero">
 
-        <h1>GAMEHUB</h1>
+        <h1>
+            GAMEHUB
+        </h1>
 
         <p>
-            Welkom bij jouw ultieme gamingwereld!
+            Welkom bij jouw gamingwereld! 🎮
         </p>
-
-        <a href="#games" class="main-button">
-            🎮 Bekijk games
-        </a>
 
     </section>
 
-    <section class="games" id="games">
 
-        <h2>🔥 Populaire Games</h2>
+    <section class="game-section" id="snake">
 
-        <div class="game-grid">
+        <div class="game-card">
 
-            <div class="game-card">
+            <img
+                class="game-image"
+                src="https://images.unsplash.com/photo-1614294148960-9aa740632a87?auto=format&fit=crop&w=1000&q=80"
+                alt="Gaming"
+            >
 
-                <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=800&q=80">
+            <div class="game-content">
 
-                <div class="game-content">
+                <h2>
+                    🐍 Snake
+                </h2>
 
-                    <h3>🎯 Action</h3>
+                <p>
+                    Bestuur de slang, eet het eten,
+                    word steeds langer en probeer
+                    de hoogste score te halen!
+                </p>
 
-                    <p>
-                        Spannende actie en uitdagende levels.
-                    </p>
-
-                    <a href="#" class="play-button">
-                        Spelen
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="game-card">
-
-                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80">
-
-                <div class="game-content">
-
-                    <h3>👾 Retro</h3>
-
-                    <p>
-                        Ga terug naar de klassieke arcadegames.
-                    </p>
-
-                    <a href="#" class="play-button">
-                        Spelen
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="game-card">
-
-                <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80">
-
-                <div class="game-content">
-
-                    <h3>🏆 Racing</h3>
-
-                    <p>
-                        Race tegen je vrienden en word nummer 1.
-                    </p>
-
-                    <a href="#" class="play-button">
-                        Spelen
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="game-card">
-
-                <img src="https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=800&q=80">
-
-                <div class="game-content">
-
-                    <h3>⚔️ Adventure</h3>
-
-                    <p>
-                        Ontdek nieuwe werelden en avonturen.
-                    </p>
-
-                    <a href="#" class="play-button">
-                        Spelen
-                    </a>
-
-                </div>
-
-            </div>
-
-            <!-- SNAKE -->
-
-            <div class="game-card">
-
-                <img src="https://images.unsplash.com/photo-1614294148960-9aa740632a87?auto=format&fit=crop&w=800&q=80">
-
-                <div class="game-content">
-
-                    <h3>🐍 Snake</h3>
-
-                    <p>
-                        Bestuur de slang, eet het voedsel en probeer zo lang mogelijk te worden!
-                    </p>
-
-                    <a href="snake.html" class="play-button">
-                        🎮 SPEEL SNAKE
-                    </a>
-
-                </div>
+                <a
+                    class="play-button"
+                    href="snake.html"
+                >
+                    🎮 SPEEL SNAKE
+                </a>
 
             </div>
 
@@ -317,9 +237,10 @@
 
     </section>
 
+
     <footer>
 
-        © 2026 Gamehub 🎮
+        © 2026 Gamehub 🐍🎮
 
     </footer>
 
