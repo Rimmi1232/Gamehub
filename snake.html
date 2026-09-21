@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -7,3 +8,247 @@
 
     <style>
         body {
+            margin: 0;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            color: #9b59ff;
+            font-size: 45px;
+        }
+
+        #score {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        canvas {
+            background: black;
+            border: 4px solid #9b59ff;
+            max-width: 90vw;
+        }
+
+        button {
+            margin: 15px;
+            padding: 12px 25px;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #9b59ff;
+        }
+
+        a {
+            color: #c084fc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🐍 SNAKE</h1>
+
+    <div id="score">Score: 0</div>
+
+    <canvas id="game" width="400" height="400"></canvas>
+
+    <br>
+
+    <button onclick="startGame()">START</button>
+
+    <p>
+        Gebruik de pijltjestoetsen ⬆️⬇️⬅️➡️
+    </p>
+
+    <a href="index.html">← Terug naar Gamehub</a>
+
+<script>
+
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+const size = 20;
+
+let snake = [
+    {x: 200, y: 200}
+];
+
+let food = {
+    x: 100,
+    y: 100
+};
+
+let dx = size;
+let dy = 0;
+
+let score = 0;
+let gameRunning = false;
+
+function draw() {
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // eten
+    ctx.fillStyle = "red";
+
+    ctx.fillRect(
+        food.x,
+        food.y,
+        size,
+        size
+    );
+
+    // slang
+    ctx.fillStyle = "#9b59ff";
+
+    for (let part of snake) {
+
+        ctx.fillRect(
+            part.x,
+            part.y,
+            size - 2,
+            size - 2
+        );
+    }
+}
+
+function move() {
+
+    if (!gameRunning) return;
+
+    const head = {
+        x: snake[0].x + dx,
+        y: snake[0].y + dy
+    };
+
+    // muur
+    if (
+        head.x < 0 ||
+        head.x >= canvas.width ||
+        head.y < 0 ||
+        head.y >= canvas.height
+    ) {
+        gameOver();
+        return;
+    }
+
+    // zichzelf raken
+    for (let part of snake) {
+
+        if (
+            head.x === part.x &&
+            head.y === part.y
+        ) {
+            gameOver();
+            return;
+        }
+    }
+
+    snake.unshift(head);
+
+    // eten
+    if (
+        head.x === food.x &&
+        head.y === food.y
+    ) {
+
+        score++;
+
+        document.getElementById("score").textContent =
+            "Score: " + score;
+
+        food = {
+            x: Math.floor(Math.random() * 20) * size,
+            y: Math.floor(Math.random() * 20) * size
+        };
+
+    } else {
+
+        snake.pop();
+    }
+
+    draw();
+}
+
+function startGame() {
+
+    snake = [
+        {x: 200, y: 200}
+    ];
+
+    dx = size;
+    dy = 0;
+
+    score = 0;
+
+    document.getElementById("score").textContent =
+        "Score: 0";
+
+    gameRunning = true;
+
+    draw();
+}
+
+function gameOver() {
+
+    gameRunning = false;
+
+    alert(
+        "Game Over! Je score is " + score
+    );
+}
+
+document.addEventListener("keydown", function(event) {
+
+    if (
+        event.key === "ArrowUp" &&
+        dy === 0
+    ) {
+        dx = 0;
+        dy = -size;
+    }
+
+    if (
+        event.key === "ArrowDown" &&
+        dy === 0
+    ) {
+        dx = 0;
+        dy = size;
+    }
+
+    if (
+        event.key === "ArrowLeft" &&
+        dx === 0
+    ) {
+        dx = -size;
+        dy = 0;
+    }
+
+    if (
+        event.key === "ArrowRight" &&
+        dx === 0
+    ) {
+        dx = size;
+        dy = 0;
+    }
+});
+
+draw();
+
+setInterval(move, 120);
+
+</script>
+
+</body>
+</html>
+```
