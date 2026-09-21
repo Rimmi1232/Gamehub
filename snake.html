@@ -1,5 +1,5 @@
+```html
 <!DOCTYPE html>
-
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
@@ -7,121 +7,199 @@
 <title>Gamehub - Snake</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-            radial-gradient(circle at top, #241044 0%, #090512 45%, #030208 100%);
-        color: white;
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-    }
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #090512;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
-    .game {
-        width: min(95vw, 560px);
-        text-align: center;
-    }
+.game {
+    width: min(95vw, 560px);
+    text-align: center;
+}
 
-    h1 {
-        font-size: 48px;
-        margin: 0 0 10px;
-        color: #b66cff;
-        text-shadow: 0 0 20px #8b35ff;
-    }
+h1 {
+    font-size: 48px;
+    margin: 0 0 10px;
+    color: #b66cff;
+    text-shadow: 0 0 20px #8b35ff;
+}
 
-    .stats {
-        display: flex;
-        justify-content: space-between;
-        margin: 15px 0;
-        padding: 12px 18px;
-        background: rgba(255,255,255,0.08);
-        border: 1px solid #6333a5;
-        border-radius: 12px;
-        font-size: 18px;
-    }
+.stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    padding: 12px 18px;
+    background: #171126;
+    border: 1px solid #6333a5;
+    border-radius: 12px;
+    font-size: 18px;
+}
 
-    canvas {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        background: #08060f;
-        border: 3px solid #8b35ff;
-        border-radius: 12px;
-        box-shadow:
-            0 0 25px rgba(139,53,255,0.5),
-            inset 0 0 30px rgba(139,53,255,0.08);
-        display: block;
-    }
+canvas {
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1 / 1;
+    background: #05030a;
+    border: 3px solid #8b35ff;
+    border-radius: 12px;
+    display: block;
+    margin: auto;
+}
 
-    .buttons {
-        margin-top: 18px;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    margin: 8px 4px;
+    background: #7c3aed;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    button {
-        border: none;
-        border-radius: 10px;
-        padding: 12px 20px;
-        background: #7c3aed;
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-    }
+button:hover {
+    background: #9b5cff;
+}
 
-    button:hover {
-        background: #9b5cff;
-        transform: translateY(-2px);
-    }
+.message {
+    min-height: 28px;
+    margin-top: 12px;
+    color: #d8c1ff;
+    font-weight: bold;
+}
 
-    .message {
-        min-height: 28px;
-        margin-top: 12px;
-        color: #d8c1ff;
-        font-weight: bold;
-    }
+.controls {
+    margin: 15px auto;
+    width: 190px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
 
-    .controls {
-        margin: 20px auto 0;
-        width: 180px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 7px;
-    }
+.controls button {
+    padding: 12px 0;
+    font-size: 20px;
+}
 
-    .controls button {
-        padding: 12px 0;
-        font-size: 20px;
-    }
+.up {
+    grid-column: 2;
+}
 
-    .up {
-        grid-column: 2;
-    }
+.left {
+    grid-column: 1;
+}
 
-    .left {
-        grid-column: 1;
-    }
+.down {
+    grid-column: 2;
+}
 
-    .down {
-        grid-column: 2;
-    }
+.right {
+    grid-column: 3;
+    grid-row: 2;
+}
 
-    .right {
-        grid-column: 3;
-        grid-row: 2;
-    }
+.back {
+    display: inline-block;
+    margin-top: 15px;
+    color: #c99cff;
+    text-decoration: none;
+}
+</style>
+</head>
 
-    .back {
-        margin-top: 20px;
-        display: inline-block;
-        color: #c99cff;
-        text-decora
+<body>
+
+<div class="game">
+
+    <h1>🐍 SNAKE</h1>
+
+    <div class="stats">
+        <span>Score: <strong id="score">0</strong></span>
+        <span>Highscore: <strong id="highscore">0</strong></span>
+    </div>
+
+    <canvas id="gameCanvas" width="500" height="500"></canvas>
+
+    <div class="message" id="message">
+        Druk op Start om te spelen!
+    </div>
+
+    <div>
+        <button onclick="startGame()">▶ Start</button>
+        <button onclick="pauseGame()">⏸ Pauze</button>
+        <button onclick="restartGame()">🔄 Opnieuw</button>
+    </div>
+
+    <div class="controls">
+        <button class="up" onclick="changeDirection('up')">⬆️</button>
+        <button class="left" onclick="changeDirection('left')">⬅️</button>
+        <button class="right" onclick="changeDirection('right')">➡️</button>
+        <button class="down" onclick="changeDirection('down')">⬇️</button>
+    </div>
+
+    <a class="back" href="index.html">← Terug naar Gamehub</a>
+
+</div>
+
+<script>
+
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+const grid = 25;
+const tiles = 20;
+
+let snake;
+let food;
+let direction;
+let nextDirection;
+let score = 0;
+let gameRunning = false;
+let paused = false;
+let gameLoop;
+
+let highscore = Number(localStorage.getItem("snakeHighscore")) || 0;
+
+document.getElementById("highscore").textContent = highscore;
+
+function createGame() {
+
+    snake = [
+        {x: 10, y: 10},
+        {x: 9, y: 10},
+        {x: 8, y: 10}
+    ];
+
+    direction = "right";
+    nextDirection = "right";
+    score = 0;
+
+    document.getElementById("score").textContent = score;
+
+    createFood();
+    draw();
+}
+
+function createFood() {
+
+    do {
+        food = {
+            x: Math.floor(Math.random() * tiles),
+            y: Math.floor(Math.random() * tiles)
+        };
+    } while (
+        snake.some(part =>
+            part.x === food
+```
