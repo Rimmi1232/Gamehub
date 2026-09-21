@@ -1,0 +1,461 @@
+```html id="7q9b3a"
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gamehub - Retro</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #05000d;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            color: #00ffcc;
+            text-shadow: 0 0 20px #00ffcc;
+            margin: 18px 0 5px;
+        }
+
+        .info {
+            font-size: 20px;
+            margin: 10px;
+        }
+
+        #game {
+            position: relative;
+            width: 400px;
+            height: 600px;
+            max-width: 95vw;
+            margin: 15px auto;
+            overflow: hidden;
+
+            background:
+                radial-gradient(circle, #241044 1px, transparent 1px);
+
+            background-size: 35px 35px;
+
+            border: 3px solid #00ffcc;
+            border-radius: 12px;
+
+            box-shadow:
+                0 0 30px rgba(0,255,204,0.4);
+        }
+
+        #player {
+            position: absolute;
+
+            width: 45px;
+            height: 45px;
+
+            bottom: 25px;
+            left: 177px;
+
+            color: #00ffcc;
+
+            font-size: 40px;
+            line-height: 45px;
+
+            filter:
+                drop-shadow(0 0 10px #00ffcc);
+        }
+
+        .enemy {
+            position: absolute;
+
+            font-size: 30px;
+
+            filter:
+                drop-shadow(0 0 8px #ff00ff);
+        }
+
+        .bullet {
+            position: absolute;
+
+            width: 5px;
+            height: 15px;
+
+            background: #ffff00;
+
+            box-shadow:
+                0 0 10px #ffff00;
+
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 13px 25px;
+            margin: 5px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #00b894;
+            color: white;
+
+            font-size: 18px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00d9ad;
+        }
+
+        .message {
+            min-height: 28px;
+            font-weight: bold;
+            color: #9affee;
+        }
+
+        a {
+            display: inline-block;
+            margin: 15px;
+
+            color: #00ffcc;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>👾 RETRO</h1>
+
+    <div class="info">
+        Score: <strong id="score">0</strong>
+        &nbsp; | &nbsp;
+        Levens: <strong id="lives">3</strong>
+    </div>
+
+    <div class="message" id="message">
+        Klik op START!
+    </div>
+
+    <button onclick="startGame()">
+        ▶ START
+    </button>
+
+    <button onclick="restartGame()">
+        🔄 OPNIEUW
+    </button>
+
+    <div id="game">
+
+        <div id="player">🚀</div>
+
+    </div>
+
+    <p>
+        ⬅️ ➡️ bewegen &nbsp; | &nbsp; Spatie = schieten
+    </p>
+
+    <a href="index.html">
+        ← Terug naar Gamehub
+    </a>
+
+<script>
+
+const game =
+    document.getElementById("game");
+
+const player =
+    document.getElementById("player");
+
+const scoreText =
+    document.getElementById("score");
+
+const livesText =
+    document.getElementById("lives");
+
+const message =
+    document.getElementById("message");
+
+let playerX = 177;
+
+let score = 0;
+let lives = 3;
+
+let playing = false;
+
+let enemies = [];
+let bullets = [];
+
+let enemyTimer;
+let gameTimer;
+
+let keys = {};
+
+document.addEventListener("keydown", event => {
+
+    keys[event.key] = true;
+
+    if (event.code === "Space") {
+
+        event.preventDefault();
+
+        shoot();
+    }
+});
+
+document.addEventListener("keyup", event => {
+
+    keys[event.key] = false;
+});
+
+function startGame() {
+
+    if (playing) return;
+
+    restartGame();
+
+    playing = true;
+
+    message.textContent =
+        "👾 Schiet de vijanden!";
+
+    enemyTimer =
+        setInterval(createEnemy, 900);
+
+    gameTimer =
+        setInterval(updateGame, 20);
+}
+
+function restartGame() {
+
+    clearInterval(enemyTimer);
+    clearInterval(gameTimer);
+
+    enemies.forEach(enemy =>
+        enemy.remove()
+    );
+
+    bullets.forEach(bullet =>
+        bullet.remove()
+    );
+
+    enemies = [];
+    bullets = [];
+
+    playerX = 177;
+
+    player.style.left =
+        playerX + "px";
+
+    score = 0;
+    lives = 3;
+
+    scoreText.textContent = score;
+    livesText.textContent = lives;
+
+    playing = false;
+
+    message.textContent =
+        "Klik op START!";
+}
+
+function createEnemy() {
+
+    if (!playing) return;
+
+    const enemy =
+        document.createElement("div");
+
+    enemy.className = "enemy";
+
+    enemy.textContent = "👾";
+
+    enemy.style.left =
+        Math.floor(
+            Math.random() * 350
+        ) + "px";
+
+    enemy.style.top =
+        "-40px";
+
+    game.appendChild(enemy);
+
+    enemies.push(enemy);
+}
+
+function shoot() {
+
+    if (!playing) return;
+
+    const bullet =
+        document.createElement("div");
+
+    bullet.className = "bullet";
+
+    bullet.style.left =
+        (playerX + 20) + "px";
+
+    bullet.style.top =
+        "530px";
+
+    game.appendChild(bullet);
+
+    bullets.push(bullet);
+}
+
+function updateGame() {
+
+    if (!playing) return;
+
+    // Speler bewegen
+
+    if (
+        keys["ArrowLeft"] &&
+        playerX > 5
+    ) {
+
+        playerX -= 6;
+
+        player.style.left =
+            playerX + "px";
+    }
+
+    if (
+        keys["ArrowRight"] &&
+        playerX < 350
+    ) {
+
+        playerX += 6;
+
+        player.style.left =
+            playerX + "px";
+    }
+
+    // Kogels
+
+    bullets.forEach((bullet, bulletIndex) => {
+
+        let y =
+            parseInt(bullet.style.top);
+
+        y -= 9;
+
+        bullet.style.top =
+            y + "px";
+
+        if (y < -20) {
+
+            bullet.remove();
+
+            bullets.splice(
+                bulletIndex,
+                1
+            );
+        }
+    });
+
+    // Vijanden
+
+    enemies.forEach((enemy, enemyIndex) => {
+
+        let y =
+            parseInt(enemy.style.top);
+
+        y += 3;
+
+        enemy.style.top =
+            y + "px";
+
+        // Vijand bereikt speler
+
+        if (y > 550) {
+
+            enemy.remove();
+
+            enemies.splice(
+                enemyIndex,
+                1
+            );
+
+            lives--;
+
+            livesText.textContent =
+                lives;
+
+            if (lives <= 0) {
+
+                gameOver();
+            }
+        }
+
+        // Kogel raakt vijand
+
+        bullets.forEach((bullet, bulletIndex) => {
+
+            if (
+                collision(
+                    bullet,
+                    enemy
+                )
+            ) {
+
+                bullet.remove();
+                enemy.remove();
+
+                bullets.splice(
+                    bulletIndex,
+                    1
+                );
+
+                enemies.splice(
+                    enemyIndex,
+                    1
+                );
+
+                score++;
+
+                scoreText.textContent =
+                    score;
+            }
+        });
+    });
+}
+
+function collision(a, b) {
+
+    const aRect =
+        a.getBoundingClientRect();
+
+    const bRect =
+        b.getBoundingClientRect();
+
+    return !(
+        aRect.right < bRect.left ||
+        aRect.left > bRect.right ||
+        aRect.bottom < bRect.top ||
+        aRect.top > bRect.bottom
+    );
+}
+
+function gameOver() {
+
+    playing = false;
+
+    clearInterval(enemyTimer);
+    clearInterval(gameTimer);
+
+    message.textContent =
+        "💥 GAME OVER! Score: " +
+        score;
+}
+
+</script>
+
+</body>
+</html>
+```
