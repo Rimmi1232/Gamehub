@@ -1,0 +1,271 @@
+```html
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gamehub - Action</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #090512;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 20px 0 5px;
+            color: #ff4d6d;
+            text-shadow: 0 0 20px #ff1744;
+        }
+
+        .info {
+            margin: 10px auto;
+            font-size: 20px;
+        }
+
+        #game {
+            position: relative;
+            width: min(95vw, 800px);
+            height: min(65vh, 500px);
+            min-height: 350px;
+            margin: 20px auto;
+            background:
+                radial-gradient(circle at center, #24102e, #08040d);
+            border: 3px solid #ff1744;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 23, 68, 0.5);
+        }
+
+        #target {
+            position: absolute;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: #ff1744;
+            border: 5px solid white;
+            cursor: crosshair;
+            display: none;
+            box-shadow: 0 0 20px #ff1744;
+        }
+
+        #target::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        button {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            background: #ff1744;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 8px;
+        }
+
+        button:hover {
+            background: #ff4565;
+            transform: scale(1.05);
+        }
+
+        .message {
+            min-height: 30px;
+            font-weight: bold;
+            color: #ffb3c1;
+        }
+
+        a {
+            color: #c084fc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🎯 ACTION</h1>
+
+    <div class="info">
+        Score: <strong id="score">0</strong>
+        &nbsp; | &nbsp;
+        Tijd: <strong id="time">30</strong>
+    </div>
+
+    <div class="message" id="message">
+        Klik op START en raak zoveel mogelijk targets!
+    </div>
+
+    <button onclick="startGame()">
+        ▶ START
+    </button>
+
+    <button onclick="restartGame()">
+        🔄 OPNIEUW
+    </button>
+
+    <div id="game">
+        <div id="target"></div>
+    </div>
+
+    <p>
+        Klik zo snel mogelijk op de rode targets! 🎯
+    </p>
+
+    <a href="index.html">
+        ← Terug naar Gamehub
+    </a>
+
+<script>
+
+const game = document.getElementById("game");
+const target = document.getElementById("target");
+
+const scoreText = document.getElementById("score");
+const timeText = document.getElementById("time");
+const message = document.getElementById("message");
+
+let score = 0;
+let time = 30;
+let playing = false;
+
+let timer;
+let moveTimer;
+
+function startGame() {
+
+    if (playing) return;
+
+    score = 0;
+    time = 30;
+
+    scoreText.textContent = score;
+    timeText.textContent = time;
+
+    playing = true;
+
+    message.textContent =
+        "🎯 SCHIET OP! Klik op de targets!";
+
+    target.style.display = "block";
+
+    moveTarget();
+
+    clearInterval(timer);
+
+    timer = setInterval(() => {
+
+        time--;
+
+        timeText.textContent = time;
+
+        if (time <= 0) {
+            endGame();
+        }
+
+    }, 1000);
+
+    clearInterval(moveTimer);
+
+    moveTimer = setInterval(moveTarget, 900);
+}
+
+function moveTarget() {
+
+    if (!playing) return;
+
+    const maxX =
+        game.clientWidth - target.offsetWidth;
+
+    const maxY =
+        game.clientHeight - target.offsetHeight;
+
+    const x =
+        Math.floor(Math.random() * maxX);
+
+    const y =
+        Math.floor(Math.random() * maxY);
+
+    target.style.left = x + "px";
+    target.style.top = y + "px";
+}
+
+target.addEventListener("click", function(event) {
+
+    event.stopPropagation();
+
+    if (!playing) return;
+
+    score++;
+
+    scoreText.textContent = score;
+
+    target.style.transform = "scale(1.2)";
+
+    setTimeout(() => {
+        target.style.transform = "scale(1)";
+    }, 80);
+
+    moveTarget();
+});
+
+function endGame() {
+
+    playing = false;
+
+    clearInterval(timer);
+    clearInterval(moveTimer);
+
+    target.style.display = "none";
+
+    message.textContent =
+        "🏆 GAME OVER! Je score is " + score + "!";
+
+}
+
+function restartGame() {
+
+    clearInterval(timer);
+    clearInterval(moveTimer);
+
+    playing = false;
+
+    target.style.display = "none";
+
+    score = 0;
+    time = 30;
+
+    scoreText.textContent = score;
+    timeText.textContent = time;
+
+    message.textContent =
+        "Klik op START en raak zoveel mogelijk targets!";
+}
+
+</script>
+
+</body>
+</html>
+```
